@@ -1,17 +1,17 @@
-generator client{
- provider ="prisma-client-js"
+generator client {
+  provider = "prisma-client-js"
 }
 
- datasource db{
-  provider ="postgresql"
-  url  =env("DATABASE_URL")
- }
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
- model Homedb{
-  id String @id @default(uuid())
-  title String
-  img String @unique
+model Homedb {
+  id          String   @id @unique
+  title       String
+  img         String   @unique
   description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

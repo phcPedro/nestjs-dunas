@@ -1,8 +1,6 @@
-export class House{
+import { CreateHouseDto } from "../dto/create-house.dto";
+
+export interface House extends CreateHouseDto{
   id: string;
-  title: string;
-  img: string;
-  description: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+
 }

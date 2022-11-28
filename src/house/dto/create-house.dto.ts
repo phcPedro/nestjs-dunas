@@ -3,12 +3,7 @@ import { IsString, IsUrl, IsUUID } from "class-validator";
 
 export class CreateHouseDto{
 
-  @IsUUID()
-  @ApiProperty({
-    description:"House Id.",
-    example:"c29c586e-7fad-435c-8b5e-5b1c3d897985"
-  })
-  houseId:string;
+  
 
   @IsString()
   @ApiProperty({
