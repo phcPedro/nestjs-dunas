@@ -3,4 +3,6 @@ export class House{
   title: string;
   img: string;
   description: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
