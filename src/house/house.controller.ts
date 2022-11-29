@@ -35,13 +35,23 @@ export class HouseController {
     return this.houseService.update(id, dto);
   }
 
+  // @Delete(':id')
+  // async delete(@Param('id') id: string) {
+  //   try {
+  //     return this.houseService.delete(id);
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary:'Remove house',
-  })
-  delete(@Param('id')id: string){
-    this.houseService.delete(id);
+  async delete(@Param('id')id: string){
+    try {
+      return this.houseService.delete(id);
+    } catch (error) {
+      throw new Error(error);
+
+    }
+
   }
 
 }

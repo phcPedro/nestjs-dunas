@@ -12,9 +12,7 @@ export class HouseService {
 
 
 
-
-
-  async findById(id: string): Promise<House> {
+  async findById(id: string){
     const record = await this.prisma.homedb.findUnique({ where: { id } });
 
     if (!record) {
@@ -48,12 +46,20 @@ export class HouseService {
         data,
       });
     }
-    async delete (id: string){
-       await this.findById(id);
-      
 
-      return this.prisma.homedb.delete({where:{id}});
+    async delete (id: string){
+      await this.findById(id);
+
+     return this.prisma.homedb.delete({where:{id}});
+   }
+
+
+
+
+
+
+
     }
-}
+
 
 
