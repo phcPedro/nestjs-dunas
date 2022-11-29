@@ -13,11 +13,11 @@ houses: House[] = [];
 
 
   findAll(): Promise<House[]>{
-    return this.prisma.houses.findMany();
+    return this.prisma.homedb.findMany();
   }
 
 async create(dto: CreateHouseDto): Promise<House>{
-    const endity = {...dto, id:randomUUID()};
+    const endity: House = {...dto};
     this.houses.push(endity);
     return endity;
 

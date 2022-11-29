@@ -12,11 +12,11 @@ export class HouseController{
 
   @Get()
   async findAll(): Promise<House[]>{
-   return await this.houseService.findAll();
+   return this.houseService.findAll();
   }
 
   @Post()
-  async create(@Body()createHouseDto: CreateHouseDto): Promise<House>{
+  create(@Body()createHouseDto: CreateHouseDto): Promise<House>{
     try{
     return this.houseService.create(createHouseDto);
    }catch(error){
