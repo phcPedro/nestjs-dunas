@@ -50,6 +50,7 @@ export class HouseService {
     }
     async delete (id: string){
        await this.findById(id);
+      
 
       return this.prisma.homedb.delete({where:{id}});
     }
