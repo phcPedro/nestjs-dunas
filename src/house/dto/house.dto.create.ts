@@ -3,7 +3,7 @@ import { IsString, IsUrl, IsUUID } from "class-validator";
 
 export class CreateHouseDto{
 
-  
+
 
   @IsString()
   @ApiProperty({
@@ -19,10 +19,5 @@ export class CreateHouseDto{
   })
   img: string;
 
-  @IsString()
-  @ApiProperty({
-    description:"Title for presentation",
-    example:"House in Santo Antonio Brazil"
-  })
-  description: string;
+ 
 }

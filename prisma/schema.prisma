@@ -8,10 +8,9 @@ datasource db {
 }
 
 model Homedb {
-  id          String   @id @unique
+  id          String   @id @unique @default(uuid())
   title       String
   img         String   @unique
-  description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

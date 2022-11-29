@@ -1,27 +1,47 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { CreateHouseDto } from "./dto/create-house.dto";
-import { HouseService } from "./house.service";
-import { House } from "./entities/house.entity";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateHouseDto } from './dto/house.dto.create';
+import { UpdateHouseDto } from './dto/house.dto.update';
+import { House } from './entities/house.entitys';
+import { HouseService } from './house.service';
 
-@ApiTags(
-)
+
+@ApiTags('House')
 @Controller('house')
-export class HouseController{
- constructor(private houseService: HouseService){}
+export class HouseController {
+  constructor(private readonly houseService:HouseService) {}
 
   @Get()
-  async findAll(): Promise<House[]>{
-   return this.houseService.findAll();
+  @ApiOperation({
+    summary:'Visualizar casas cadastradas.'
+  })
+  findAll(): Promise<House[]>{
+    return this.houseService.findAll();
+  }
+  @Post()
+  @ApiOperation({
+    summary: 'Cadastra uma casa',
+  })
+  create(@Body() dto: CreateHouseDto): Promise<House>{
+    return this.houseService.create(dto);
+
+  }
+  @Patch(':id')
+  @ApiOperation({
+    summary:'Editar uma casa cadastrada.'
+  })
+  update(@Param('id') id: string, @Body() dto: UpdateHouseDto): Promise<House>{
+    return this.houseService.update(id, dto);
   }
 
-  @Post()
-  create(@Body()createHouseDto: CreateHouseDto): Promise<House>{
-    try{
-    return this.houseService.create(createHouseDto);
-   }catch(error){
-    console.log(error);
-   }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary:'Remove house',
+  })
+  delete(@Param('id')id: string){
+    this.houseService.delete(id);
   }
 
 }

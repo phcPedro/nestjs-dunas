@@ -6,6 +6,7 @@ import { HouseModule } from './house/house.module';
 import { PrismaService } from './prisma/prisma.service';
 
 
+
 @Module({
   imports: [HouseModule, PrismaModule],
   controllers: [AppController],
