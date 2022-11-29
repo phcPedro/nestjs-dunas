@@ -6,3 +6,15 @@
 
 No decorrer do projeto estarei atualizando o redme com mais informações.
 
+Para iniciar o projeto
+
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+
+http://localhost:3000/api/ Swagger link
