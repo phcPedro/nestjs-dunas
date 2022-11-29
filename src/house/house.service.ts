@@ -49,9 +49,9 @@ export class HouseService {
       });
     }
     async delete (id: string){
+       await this.findById(id);
 
-
-      await this.prisma.homedb.delete({where:{id}});
+      return this.prisma.homedb.delete({where:{id}});
     }
 }
 
