@@ -13,4 +13,20 @@ model Homedb {
   img         String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("House")
+}
+
+model Userdb {
+  id String @id @unique @default(uuid())
+  email String @unique
+  name String
+  password String
+  cpf String @unique
+  isAdmin Boolean @default(false) @map("isAdmin")
+  creadAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@map("user")
+
 }

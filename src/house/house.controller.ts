@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateHouseDto } from './dto/house.dto.create';
 import { UpdateHouseDto } from './dto/house.dto.update';
 import { House } from './entities/house.entitys';
@@ -34,14 +33,6 @@ export class HouseController {
   update(@Param('id') id: string, @Body() dto: UpdateHouseDto): Promise<House>{
     return this.houseService.update(id, dto);
   }
-
-  // @Delete(':id')
-  // async delete(@Param('id') id: string) {
-  //   try {
-  //     return this.houseService.delete(id);
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
 
   @Delete(':id')
   async delete(@Param('id')id: string){
