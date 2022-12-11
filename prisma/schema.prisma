@@ -33,3 +33,11 @@ model Userdb {
   @@map("user")
 
 }
+
+model Profiledb {
+  id String @id @default(uuid())
+  title String
+  imageUrl String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}

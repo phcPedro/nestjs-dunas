@@ -13,14 +13,14 @@ export class UserController {
 
   @Get()
   @ApiOperation({
-    summary:'Visualizar casas cadastradas.'
+    summary:'Visualizar usuarios cadastrados.'
   })
   findAll(): Promise<User[]>{
     return this.userService.findAll();
   }
   @Post()
   @ApiOperation({
-    summary: 'Cadastra uma casa',
+    summary: 'Cadastrar um novo usaurio.',
   })
   create(@Body() dto: CreateUserDto): Promise<User>{
     return this.userService.create(dto);
@@ -28,13 +28,16 @@ export class UserController {
   }
   @Patch(':id')
   @ApiOperation({
-    summary:'Editar uma casa cadastrada.'
+    summary:'Editar informações de um usuario cadastrado.'
   })
   update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<User>{
     return this.userService.update(id, dto);
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary:'Deletar um usuario pelo id.'
+  })
   async delete(@Param('id')id: string){
     try {
       return this.userService.delete(id);
