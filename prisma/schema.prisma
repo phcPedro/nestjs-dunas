@@ -17,6 +17,9 @@ model Homedb {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  profiles Profiledb[]
+
+
   @@map("House")
 }
 
@@ -30,12 +33,20 @@ model Userdb {
   creadAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
+  profiles Profiledb[]
+
   @@map("user")
 
 }
 
 model Profiledb {
   id String @id @default(uuid())
+
+  user Userdb @relation(fields: [userId], references: [id])
+  userId String
+
+  houses Homedb[]
+
   title String
   imageUrl String
   createdAt DateTime @default(now())
