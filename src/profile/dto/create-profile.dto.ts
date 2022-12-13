@@ -6,7 +6,7 @@ export class CreateProfileDto {
 @Length(3,15)
 @ApiProperty({
   description:"Nome do perfil. Deve conter no minimo 3 caracteres e maximo 10.",
-  example:"Lord_Pedro"
+  example:"Dom_Pedro"
 })
 title: string;
 
@@ -16,6 +16,20 @@ title: string;
   example:"https://avatars.githubusercontent.com/u/68974506?v=4"
 })
 imageUrl: string;
+
+@IsUUID(undefined, {each: true})
+@ApiProperty({
+  description: 'Id do usuario do perfil.'
+})
+user: string;
+
+@IsUUID(undefined, {each: true})
+@ApiProperty({
+  description: 'Lista com os IDs das casas favoritadas'
+})
+houses: string[];
+
+
 
 
 }

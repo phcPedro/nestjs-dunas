@@ -1,14 +1,21 @@
-import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
+import { handleError } from 'src/utils/handle-error.utils';
+import { Prisma } from '@prisma/client';
+
 
 @Injectable()
 export class UserService {
   private userSelect = {
-    id:true,
+    id: true,
     email: true,
     name: true,
     cpf: true,
@@ -18,91 +25,92 @@ export class UserService {
     updatedAt: true,
   };
 
+  constructor(private readonly prisma: PrismaService) {}
 
-  constructor(private readonly prisma: PrismaService){}
-
-
-
-
-
-  async findById(id: string){
+  async findById(id: string) {
     const record = await this.prisma.userdb.findUnique({ where: { id } });
 
     if (!record) {
-      throw new NotFoundException(`ID: '${id}' não encontrado.`)
+      throw new NotFoundException(`ID: '${id}' não encontrado.`);
     }
 
     return record;
   }
 
-  findAll(): Promise<User[]>{
-    return this.prisma.userdb.findMany();
-  }
+  findAll(){
+    return this.prisma.userdb.findMany({
+      select: {
+        name: true,
+        email: true,
+        cpf: true,
+        id: true,
+        password: false,
+        isAdmin: false,
+        _count: {select:{ profile: true,}}
+      }
 
-  async create(dto:CreateUserDto):Promise<User>{
-   if (dto.password != dto.confirmPassword){
-    throw new BadRequestException('As senhas não são iguais.');
-   }
-
-   delete dto.confirmPassword
-
-    const data: User = {...dto, password: await bcrypt.hash(dto.password, 10)};
-
-    return this.prisma.userdb.create({data}).catch((error)=>{
-      console.log(error.message);
-      throw new UnprocessableEntityException(error.message);
-      return undefined
     });
   }
 
-    async update(id: string, dto: UpdateUserDto): Promise<User>{
+  async create(dto: CreateUserDto) {
+    if (dto.password != dto.confirmPassword) {
+      throw new BadRequestException('As senhas não são iguais.');
+    }
 
-      await this.findById(id);
+    delete dto.confirmPassword;
 
-      if (dto.password != dto.confirmPassword){
-        throw new BadRequestException('As senhas não são iguais.');
-      }
+    const data: Prisma.UserdbCreateInput = {
+      email: dto.email,
+      name: dto.name,
+      cpf: dto.cpf,
+      password: await bcrypt.hash(dto.password, 10),
+      // profile: {
+      //   connect: dto.profiles.map((profileId) => ({
+      //     id: profileId,
+      //   })),
+      // },
+    };
 
-      delete dto.confirmPassword;
+    // return this.prisma.userdb.create({ data }).catch((error) => {
+    //   console.log(error.message);
+    //   throw new UnprocessableEntityException(error.message);
+    //   return undefined;
+    // });
+  }
 
-      const data: Partial<User> ={...dto};
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
+    await this.findById(id);
 
-      if (data.password){
-        data.password = await bcrypt.hash(data.password, 10);
-      }
+    if (dto.password != dto.confirmPassword) {
+      throw new BadRequestException('As senhas não são iguais.');
+    }
 
-      return this.prisma.userdb.update({
-        where:{id},
+    delete dto.confirmPassword;
+
+    const data: Prisma.UserdbUpdateInput = {
+      email: dto.email,
+      name: dto.name,
+      cpf: dto.cpf,
+      password: await bcrypt.hash(dto.password, 10)
+
+    };
+
+    if (dto.password) {
+      dto.password = await bcrypt.hash(dto.password, 10);
+    }
+
+    return this.prisma.userdb
+      .update({
+        where: { id },
         data,
         select: this.userSelect,
-      }).catch(this.handleError);
-    }
+      })
+      .catch(handleError);
+  }
 
-    async delete (id: string){
-      await this.findById(id);
+  async delete(id: string) {
+    await this.findById(id);
 
-     return this.prisma.userdb.delete({where:{id}});
-   }
-   handleError(error: Error): undefined{
-    const errorLines = error.message?.split('\n');
-    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
-
-    if (!lastErrorLine){
-      console.error(error);
-    }
-
-    throw new UnprocessableEntityException(
-      lastErrorLine || 'Um erro ocorreu ao executar a operação',
-    );
-
-   }
-
-
-
-
-
-
+    return this.prisma.userdb.delete({ where: { id } });
+  }
 }
-
-
-

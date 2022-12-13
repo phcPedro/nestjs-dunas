@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { isLocale, IsString, IsUrl} from "class-validator";
+import { IsString, IsUrl, IsUUID} from "class-validator";
 
 export class CreateHouseDto{
 
@@ -38,6 +38,7 @@ export class CreateHouseDto{
     description:"Diferente do titulo, coloque mais informçãoes sobre o imovel.",
     example:"O sobrado no bairro Ingleses do Rio Vermelho com 150 metros quadrados com 3 quartos sendo 2 suítes e 3 banheiros  Vai lhe possibilitar curtir os dias mais quentes na piscina. Já está com os móveis. Possui circuito de segurança, piscina e jacuzzi, todo em mármore branco."
   })
-  information: string
+  information: string;
 
+  
 }

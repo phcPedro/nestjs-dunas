@@ -1,51 +1,62 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './entities/profile.entity';
 import { ProfileService } from './profile.service';
 
-
 @ApiTags('Profile')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 @Controller('profile')
 export class ProfileController {
-  constructor(private readonly profileService:ProfileService) {}
+  constructor(private readonly profileService: ProfileService) {}
 
   @Get()
   @ApiOperation({
-    summary:'Visualizar perfis de usuarios.'
+    summary: 'Visualizar perfis de usuarios.',
   })
-  findAll(): Promise<Profile[]>{
-    return this.profileService.findAll();
+  findAll(@LoggedUser()user:User) {
+    return this.profileService.findAll(user.id);
   }
   @Post()
   @ApiOperation({
     summary: 'Cadastrar perfil.',
   })
-  create(@Body() dto: CreateProfileDto): Promise<Profile>{
+  create(@Body() dto: CreateProfileDto){
     return this.profileService.create(dto);
-
   }
   @Patch(':id')
   @ApiOperation({
-    summary:'Editar um perfil.'
+    summary: 'Editar um perfil.',
   })
-  update(@Param('id') id: string, @Body() dto: UpdateProfileDto): Promise<Profile>{
-    return this.profileService.update(id, dto);
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  update(@LoggedUser()user:User){
+    return this.profileService.update;
   }
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Excluir um perfil.'
+    summary: 'Excluir um perfil.',
   })
-  async delete(@Param('id')id: string){
+  async delete(@Param('id') id: string) {
     try {
       return this.profileService.delete(id);
     } catch (error) {
       throw new Error(error);
-
     }
-
   }
-
 }

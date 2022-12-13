@@ -28,12 +28,12 @@ model Userdb {
   email String @unique
   name String
   password String
-  cpf String @unique
+  cpf Int @unique
   isAdmin Boolean @default(false) @map("isAdmin")
   creadAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
-  profiles Profiledb[]
+  profile Profiledb[]
 
   @@map("user")
 

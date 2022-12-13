@@ -1,3 +1,5 @@
+import { Profiledb } from "@prisma/client";
+
 export class House{
   id?: string;
   title: string;
@@ -5,6 +7,7 @@ export class House{
   location:  string;
   information: string;
   img: string;
+  profiles?: Profiledb[]
   createdAt?: Date;
   updatedAt?:Date;
 }

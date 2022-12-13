@@ -13,9 +13,12 @@ async function bootstrap() {
    .setDescription('Application to help realtors in the presentation and sale of houses')
    .setVersion('0.0.1 ALPHA')
    .addTag('status')
+   .addTag('Auth')
    .addTag('Home')
    .addTag('User')
    .addTag('Profile')
+   .addTag('order')
+   .addBearerAuth()
    .build();
 
    const document = SwaggerModule.createDocument(app, config);
