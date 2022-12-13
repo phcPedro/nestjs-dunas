@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateHouseDto } from './dto/house.dto.create';
 import { UpdateHouseDto } from './dto/house.dto.update';
 import { House } from './entities/house.entitys';
@@ -7,6 +8,8 @@ import { HouseService } from './house.service';
 
 
 @ApiTags('House')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 @Controller('house')
 export class HouseController {
   constructor(private readonly houseService:HouseService) {}
