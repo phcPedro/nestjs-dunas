@@ -29,7 +29,7 @@ export class UserController {
   findAll(){
     return this.userService.findAll();
   }
-  @Post()
+  @Post('user')
   @ApiOperation({
     summary: 'Cadastrar um novo usaurio.',
   })

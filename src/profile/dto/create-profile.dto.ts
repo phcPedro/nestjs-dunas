@@ -19,15 +19,12 @@ imageUrl: string;
 
 @IsUUID(undefined, {each: true})
 @ApiProperty({
-  description: 'Id do usuario do perfil.'
+  description: 'Id do usuario do perfil.',
+  example:"390e9047-c165-4a2c-bc99-06b33498567e"
 })
 user: string;
 
-@IsUUID(undefined, {each: true})
-@ApiProperty({
-  description: 'Lista com os IDs das casas favoritadas'
-})
-houses: string[];
+
 
 
 

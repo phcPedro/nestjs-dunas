@@ -17,6 +17,8 @@ model Homedb {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  
+
   profiles Profiledb[]
 
 
@@ -28,9 +30,9 @@ model Userdb {
   email String @unique
   name String
   password String
-  cpf Int @unique
+  cpf String @unique
   isAdmin Boolean @default(false) @map("isAdmin")
-  creadAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
   profile Profiledb[]
@@ -47,8 +49,11 @@ model Profiledb {
 
   houses Homedb[]
 
+
   title String
   imageUrl String
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
+
+

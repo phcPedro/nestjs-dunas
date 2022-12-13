@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 
 
 
+
 @Module({
   imports: [HouseModule, PrismaModule, UserModule, ProfileModule, AuthModule],
   controllers: [AppController],

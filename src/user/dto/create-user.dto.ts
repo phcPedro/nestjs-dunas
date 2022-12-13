@@ -1,5 +1,6 @@
+import { inheritValidationMetadata } from "@nestjs/mapped-types";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsInt, IsString, IsUUID,Matches, MinLength } from "class-validator";
+import { IsEmail, IsInt, IsString, IsUUID,Length,Matches, MinLength } from "class-validator";
 
 export class CreateUserDto {
   @IsEmail()
@@ -36,22 +37,20 @@ export class CreateUserDto {
   })
   confirmPassword:string;
 
-  @IsInt()
+  @Length(11,11)
+  @Matches(/^[0-9]*$/, {
+    message:'CPF invalido!',
+  })
   @ApiProperty({
     description:'Coloque seu cpf. Sem ponto ou traço, somente os numeros.',
     example:'12312312312'
   })
-  cpf:number;
+  cpf:string;
 
-  @IsUUID(undefined, {each: true})
-  @ApiProperty({
-    description: 'Lista com os IDs dos perfis.'
-  })
-  profiles: string[];
 
-  
 
-  creatdAt?: Date;
+
+  createdAt?: Date;
   updatedAt?: Date;
 
 

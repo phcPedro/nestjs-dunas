@@ -1,4 +1,5 @@
 import {
+  HttpException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -71,6 +72,11 @@ create(dto: CreateProfileDto ) {
   async delete(id: string) {
     await this.findById(id);
 
-    return this.prisma.profiledb.delete({ where: { id } });
+    await this.prisma.profiledb.delete({ where: { id } });
+
+    throw new HttpException('Deletado com sucesso.', 204);
   }
+
+
+
 }

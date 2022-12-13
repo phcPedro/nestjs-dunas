@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -46,6 +47,7 @@ export class UserService {
         id: true,
         password: false,
         isAdmin: false,
+        createdAt: true,
         _count: {select:{ profile: true,}}
       }
 
@@ -64,18 +66,26 @@ export class UserService {
       name: dto.name,
       cpf: dto.cpf,
       password: await bcrypt.hash(dto.password, 10),
-      // profile: {
-      //   connect: dto.profiles.map((profileId) => ({
-      //     id: profileId,
-      //   })),
-      // },
+
+
     };
 
-    // return this.prisma.userdb.create({ data }).catch((error) => {
-    //   console.log(error.message);
-    //   throw new UnprocessableEntityException(error.message);
-    //   return undefined;
-    // });
+    return this.prisma.userdb.create({
+      data,
+      select:{
+        id: true,
+        name: true,
+        email: true,
+        cpf: true,
+        password: true,
+        isAdmin: true,
+        createdAt: true,
+        updateAt: true,
+
+      }
+    })
+    .catch(handleError);
+
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
@@ -103,14 +113,19 @@ export class UserService {
       .update({
         where: { id },
         data,
-        select: this.userSelect,
+        include:{
+         _count:{select:{profile:true}},
+        }
+
       })
       .catch(handleError);
   }
 
-  async delete(id: string) {
-    await this.findById(id);
+  async delete(userId: string) {
+    await this.findById(userId);
 
-    return this.prisma.userdb.delete({ where: { id } });
+    await this.prisma.userdb.delete({ where: { id: userId } });
+
+    throw new HttpException('Deletado com sucesso.', 204);
   }
 }

@@ -5,7 +5,7 @@ export class User {
   email: string;
   name: string;
   password: string;
-  cpf: number;
+  cpf: string;
   profile?: Profiledb[];
 
   isAdmin?: boolean;
